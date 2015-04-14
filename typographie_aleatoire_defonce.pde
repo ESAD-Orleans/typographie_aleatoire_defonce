@@ -29,11 +29,11 @@ color couleurAleatoire;
 //
 // dimension du poster
 int POSTER_WIDTH = 1000;
-int POSTER_HEIGHT = 1522;
+int POSTER_HEIGHT = 1300;
 // echelle des lettres
-float ECHELLE = .5;
+float ECHELLE = .75;
 // echelle de visualisation
-float WINDOW_SCALE = 0.5;
+float WINDOW_SCALE = 0.65;
 // rendu PDF
 PGraphicsPDF pdf;
 // echelle du PDF
@@ -100,9 +100,12 @@ void Dessine() {
   NouvelleCouleurAleatoire();
 
   // on dessine les lettres a differentes positions
-  dessineUneLettre("A", largeur*1*ECHELLE, largeur*2*ECHELLE);
-  dessineUneLettre("B", largeur*3*ECHELLE, largeur*2*ECHELLE);
-  dessineUneLettre("C", largeur*5*ECHELLE, largeur*2*ECHELLE);
+  dessineUneLettre("H", largeur*3*ECHELLE, largeur*4*ECHELLE);
+  dessineUneLettre("A", largeur*5*ECHELLE, largeur*4*ECHELLE);
+  dessineUneLettre("S", largeur*1*ECHELLE, largeur*6*ECHELLE);
+  dessineUneLettre("A", largeur*3*ECHELLE, largeur*6*ECHELLE);
+  dessineUneLettre("R", largeur*5*ECHELLE, largeur*6*ECHELLE);
+  dessineUneLettre("D", largeur*7*ECHELLE, largeur*6*ECHELLE);
   //
   
   // affiche un texte 
@@ -164,7 +167,7 @@ void dessineUnMorceau (String lettre, int identifiant) {
 
 // fonction qui dessine une image d'arriere-plan au hasard
 void dessinePoster () {
-  PImage poster= loadImage("numeriser-"+round(random(1, 11))+"-01.jpg");
+  PImage poster= loadImage("numeriser-"+round(random(1, 19))+".jpg");
   image(poster, 0, 0);
 }
 
