@@ -19,6 +19,8 @@ int nbPossibilites=11;
 color[] palette= new color[4];
 // couleur de remplissage
 color couleurAleatoire;
+//
+float ECHELLE = 0.2;
 
 // demarrage
 void setup () {
@@ -61,14 +63,15 @@ void keyPressed () {
   NouvelleCouleurAleatoire();
 
   // on dessine les lettres a differentes positions
-  dessineUneLettre("A", largeur, largeur*2);
-  dessineUneLettre("B", largeur*3, largeur*2);
-  dessineUneLettre("C", largeur*5, largeur*2);
+  dessineUneLettre("A", largeur*1*ECHELLE, largeur*2*ECHELLE);
+  dessineUneLettre("B", largeur*3*ECHELLE, largeur*2*ECHELLE);
+  dessineUneLettre("C", largeur*5*ECHELLE, largeur*2*ECHELLE);
 }
 
 // fonction qui dessine une lettre, a une position x,y
 void dessineUneLettre (String lettre, float x, float y) {
   translate(x, y);
+  scale(ECHELLE);
   
   // dessine les 4 morceaux
   dessineUnMorceau(lettre, 1);
