@@ -11,6 +11,12 @@ import geomerative.*;
 import org.apache.batik.svggen.font.table.*;
 import org.apache.batik.svggen.font.*;
 
+// utilise la librairie PDF de processing
+import processing.pdf.*;
+
+// 
+import java.util.Date;
+
 // largeur d'un quartier de lettre
 int largeur=141;
 // nombre de variante de lettre
@@ -20,19 +26,28 @@ color[] palette= new color[4];
 // couleur de remplissage
 color couleurAleatoire;
 //
-float ECHELLE = 0.2;
+//
+// dimension du poster
+int POSTER_WIDTH = 1000;
+int POSTER_HEIGHT = 1522;
+// echelle des lettres
+float ECHELLE = .5;
+// echelle de visualisation
+float WINDOW_SCALE = 0.5;
+// rendu PDF
+PGraphicsPDF pdf;
+// echelle du PDF
+float PDF_SCALE = 2;
 
 // demarrage
 void setup () {
   // taille de la fenetre, en pixels
-  size(1000, 800);
+  size((int)(POSTER_WIDTH*WINDOW_SCALE), (int)(POSTER_HEIGHT*WINDOW_SCALE));
   // couleur d'arriere-plan, blanc
   background(255);
   // initialisation de la librairie Geomerative
   RG.init(this);
 
-  // desactivation du dessin des contours
-  noStroke();
   // definitions des 4 couleurs de la palette
   // au format Rouge Vert Bleur
   palette[0]= color(255, 0, 0);
@@ -40,8 +55,8 @@ void setup () {
   palette[2]= color(0, 255, 0);
   palette[3]= color(255, 255, 255);
 
-  // simulation d'une premiere touche au clavier
-  keyPressed();
+  // dessin d'une lettre
+  Dessine();
 }
 // 
 void draw () {
@@ -55,6 +70,28 @@ void NouvelleCouleurAleatoire() {
 
 // fonction qui se declenche quand on appuie sur une touche
 void keyPressed () {
+
+  switch(keyCode) {
+  case 68: // touche "D"
+    Dessine();
+    break;
+    default:
+    println(keyCode);
+  }
+}
+
+void Dessine() {
+
+  scale(WINDOW_SCALE);
+  scale(1/PDF_SCALE);
+  // date actuelle, en millisecondes
+  long now = (new Date()).getTime();
+  // initialise un nouveau doc PDF
+  pdf = (PGraphicsPDF) createGraphics((int)(POSTER_WIDTH*PDF_SCALE),(int)(POSTER_HEIGHT*PDF_SCALE), PDF, "screen-"+now+".pdf");
+  beginRecord(pdf);
+  scale(PDF_SCALE);
+  // desactivation du dessin des contours
+  noStroke();
   // arriere-plan transparent
   background(255);
   // on execute la fonction de dessin d'image d'arriere-plan
@@ -66,21 +103,31 @@ void keyPressed () {
   dessineUneLettre("A", largeur*1*ECHELLE, largeur*2*ECHELLE);
   dessineUneLettre("B", largeur*3*ECHELLE, largeur*2*ECHELLE);
   dessineUneLettre("C", largeur*5*ECHELLE, largeur*2*ECHELLE);
+  //
+  
+  // affiche un texte 
+  //textSize(100);
+  //text("Hello World",100,height-300);
+  
+  //
+  endRecord();
 }
 
 // fonction qui dessine une lettre, a une position x,y
 void dessineUneLettre (String lettre, float x, float y) {
+
+  pushMatrix();
   translate(x, y);
   scale(ECHELLE);
-  
+
   // dessine les 4 morceaux
   dessineUnMorceau(lettre, 1);
   dessineUnMorceau(lettre, 2);
   dessineUnMorceau(lettre, 3);
   dessineUnMorceau(lettre, 4);
-  
+
   // replace le dessin a son origine
-  resetMatrix();
+  popMatrix();
 }
 
 // fonction qui dessine un morceau de lettre a son emplacement, en fonction de son identifiant
